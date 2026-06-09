@@ -10,7 +10,13 @@ grouping and table types*](https://community.sap.com/t5/technology-blog-posts-by
 
 ## Run locally (zero BTP setup required)
 
-You only need **Node.js 20+** installed.
+You only need **Node.js 20 or 22 (LTS)** installed.
+
+> **Important:** Do **not** use Node 24 yet — at the time of writing the
+> SQLite driver (`better-sqlite3`) does not ship prebuilt Windows binaries
+> for Node 24, which forces a native compile that needs Python and Visual
+> Studio Build Tools. Stick with **Node 22 LTS** from
+> <https://nodejs.org/en/download>.
 
 ```bash
 # 1. Install dependencies (first time only)
