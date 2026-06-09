@@ -5,24 +5,46 @@
     <meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Business Partner Sales Orders</title>
+
+    <script>
+      // Local FLP sandbox configuration. This wraps the Fiori Elements app
+      // in an in-memory Launchpad shell so that services like iAppState,
+      // RootViewController, and cross-navigation are available during
+      // standalone local development.
+      window["sap-ushell-config"] = {
+        defaultRenderer: "fiori2",
+        renderers: { fiori2: { componentData: { config: { search: "hidden" } } } },
+        applications: {
+          "BusinessPartnerSalesOrders-display": {
+            additionalInformation: "SAPUI5.Component=iap.sales.businesspartnersalesorders",
+            applicationType: "URL",
+            url: ".",
+            title: "Business Partner Sales Orders"
+          }
+        }
+      };
+    </script>
+
+    <script src="https://ui5.sap.com/1.140.0/test-resources/sap/ushell/bootstrap/sandbox2.js"></script>
+
     <script
       id="sap-ui-bootstrap"
       src="https://ui5.sap.com/1.140.0/resources/sap-ui-core.js"
       data-sap-ui-theme="sap_horizon"
       data-sap-ui-resourceroots='{"iap.sales.businesspartnersalesorders": "./"}'
-      data-sap-ui-oninit="module:sap/ui/core/ComponentSupport"
-      data-sap-ui-async="true"
+      data-sap-ui-libs="sap.m, sap.ushell, sap.ui.layout, sap.fe.templates"
       data-sap-ui-compatVersion="edge"
+      data-sap-ui-frameOptions="allow"
+      data-sap-ui-async="true"
     ></script>
+
+    <script>
+      sap.ui.getCore().attachInit(function () {
+        sap.ushell.Container.createRendererInternal().then(function (oRenderer) {
+          oRenderer.placeAt("content");
+        });
+      });
+    </script>
   </head>
-  <body class="sapUiBody" id="content">
-    <div
-      data-sap-ui-component
-      data-name="iap.sales.businesspartnersalesorders"
-      data-id="container"
-      data-settings='{"id" : "businesspartnersalesorders"}'
-      data-handle-validation="true"
-      style="height: 100vh"
-    ></div>
-  </body>
+  <body class="sapUiBody" id="content"></body>
 </html>
