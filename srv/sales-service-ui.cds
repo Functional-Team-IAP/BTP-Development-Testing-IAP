@@ -1,4 +1,4 @@
-using SalesService from '../../srv/sales-service';
+using SalesService from './sales-service';
 
 annotate SalesService.BusinessPartnerSalesOrders with @(
   UI.HeaderInfo : {

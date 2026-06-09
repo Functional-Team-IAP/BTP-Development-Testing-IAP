@@ -1,82 +1,99 @@
-# Business Partner Sales Orders — Fiori Elements List Report on SAP BTP
+# Business Partner Sales Orders — Fiori Elements List Report
 
 A SAP Cloud Application Programming Model (CAP, Node.js) service that exposes
 Business Partner sales orders as OData V4, paired with a SAPUI5 Fiori Elements
-**List Report** that uses the annotation-driven **grouping** feature described
-in the SAP community blog [*Fiori Elements List Report — sorting, grouping and
-table types*](https://community.sap.com/t5/technology-blog-posts-by-sap/fiori-elements-list-report-sorting-grouping-and-table-types/ba-p/13350422/page/2).
+**List Report** demonstrating the annotation-driven **grouping** feature
+described in the SAP community blog [*Fiori Elements List Report — sorting,
+grouping and table types*](https://community.sap.com/t5/technology-blog-posts-by-sap/fiori-elements-list-report-sorting-grouping-and-table-types/ba-p/13350422/page/2).
 
-## What it does
+---
 
-- Loads the sample dataset from the provided Excel workbook (55 rows) as a CSV
-  seed file in `db/data/`.
-- Exposes a `SalesService.BusinessPartnerSalesOrders` OData V4 entity set.
-- Renders a List Report with:
-  - **Initial grouping** by `companyName` and `country` via
-    `UI.PresentationVariant.GroupBy`.
-  - **Default sort** by company ascending then converted amount descending via
-    `UI.PresentationVariant.SortOrder`.
-  - User-controlled re-grouping, sorting, filtering, and column selection
-    enabled through `tableSettings.personalization` in `manifest.json`.
-  - Filter bar exposing Company, Country, City, Currency, and Sales Order ID.
-  - Currency-aware amount column via `@Measures.ISOCurrency`.
+## Run locally (zero BTP setup required)
+
+You only need **Node.js 20+** installed.
+
+```bash
+# 1. Install dependencies (first time only)
+npm install
+
+# 2. Start the server
+npm start
+```
+
+That's it. The terminal will print something like:
+
+```
+[cds] - server listening on { url: 'http://localhost:4004' }
+```
+
+Open **http://localhost:4004** in your browser. You'll see a CAP welcome
+page with two links worth knowing:
+
+| Link | What it shows |
+| --- | --- |
+| `businesspartnersalesorders/webapp/index.html` | The full **Fiori Elements List Report** with grouping |
+| `/$fiori-preview/SalesService/BusinessPartnerSalesOrders` | A quick CAP-generated preview (no manifest config — use the link above instead) |
+
+The List Report opens **already grouped by Company Name and Country**, with
+55 rows from the sample dataset (sourced from the provided Excel workbook).
+Use the table's settings (⚙ → Group) to change grouping at runtime.
+
+Auth is mocked locally — no login prompt; the in-memory user `alice` has the
+required `BPSalesViewer` role.
+
+### Stopping the server
+
+`Ctrl+C` in the terminal.
+
+### Live reload during development
+
+```bash
+npx cds watch
+```
+
+Restarts the server automatically whenever a `.cds` or service file changes.
+
+---
 
 ## Project layout
 
 ```
 .
-├── app/businesspartnersalesorders/   # Fiori Elements List Report
-│   ├── annotations.cds               # UI annotations (LineItem, PresentationVariant.GroupBy, ...)
-│   ├── webapp/                       # UI5 boot files (manifest, Component.js, index.html, i18n)
-│   ├── ui5.yaml                      # local dev server config
-│   ├── xs-app.json                   # app-level router rules (used by html5-apps-repo)
-│   └── package.json
-├── approuter/                        # Managed approuter for CF
 ├── db/
-│   ├── schema.cds                    # BusinessPartnerSalesOrders entity
-│   └── data/iap.sales-BusinessPartnerSalesOrders.csv
-├── srv/sales-service.cds             # OData V4 service definition
-├── mta.yaml                          # Cloud Foundry multi-target build
-├── xs-security.json                  # XSUAA scopes / role templates
-└── package.json                      # CAP root (Node.js)
+│   ├── schema.cds                                       # BusinessPartnerSalesOrders entity
+│   └── data/iap.sales-BusinessPartnerSalesOrders.csv    # 55 rows from the Excel workbook
+├── srv/
+│   ├── sales-service.cds                                # OData V4 service @ /sales
+│   └── sales-service-ui.cds                             # UI annotations (LineItem, PresentationVariant.GroupBy, ...)
+├── app/businesspartnersalesorders/
+│   └── webapp/                                          # Fiori Elements List Report
+│       ├── manifest.json                                # Responsive table + group personalization on
+│       ├── Component.js
+│       ├── index.html
+│       └── i18n/i18n.properties
+└── package.json                                         # CAP root (Node.js)
 ```
-
-## Local development
-
-```bash
-npm install
-cd app/businesspartnersalesorders && npm install && cd ../..
-npm start                                       # CAP service on http://localhost:4004
-# in a second shell:
-cd app/businesspartnersalesorders && npm start  # Fiori app via @sap/ux-ui5-tooling
-```
-
-Open the URL printed by `fiori run`. The List Report opens already grouped
-by Company Name and Country; users can change grouping via the table's
-*Settings → Group* dialog.
-
-A mocked user `alice` with role `BPSalesViewer` is pre-configured in
-`package.json`, so authentication does not block local testing.
-
-## Deploy to SAP BTP Cloud Foundry
-
-Prerequisites: Cloud MTA Build Tool (`mbt`), `cf` CLI with the
-multiapps plug-in, and a CF space with entitlements for **HANA Cloud**,
-**XSUAA**, **HTML5 Application Repository**, and **Destination Service**.
-
-```bash
-npm run build           # produces mta_archives/archive.mtar
-cf deploy mta_archives/archive.mtar
-```
-
-After deploy, assign the `BPSalesViewerRC` role collection to your user in
-the BTP Cockpit and launch the app from the *HTML5 Applications* section.
 
 ## Where the grouping behavior lives
 
 | File | Annotation / setting | Effect |
 | --- | --- | --- |
-| `app/businesspartnersalesorders/annotations.cds` | `UI.PresentationVariant.GroupBy: [companyName, country]` | Initial group rows |
-| `app/businesspartnersalesorders/annotations.cds` | `UI.PresentationVariant.SortOrder` | Default sort within groups |
+| `srv/sales-service-ui.cds` | `UI.PresentationVariant.GroupBy: [companyName, country]` | Initial group rows |
+| `srv/sales-service-ui.cds` | `UI.PresentationVariant.SortOrder` | Default sort within groups |
 | `app/businesspartnersalesorders/webapp/manifest.json` | `tableSettings.personalization.group: true` | Users can change grouping at runtime |
 | `app/businesspartnersalesorders/webapp/manifest.json` | `tableSettings.type: "ResponsiveTable"` | Table type that renders group headers |
+
+## Sample data
+
+The CSV in `db/data/` was generated from the supplied
+`Business_Partner_Sales_Orders_1.xlsx`. Records use deterministic UUIDs
+derived from the row content, so the data survives restarts identically.
+The dataset is loaded into an **in-memory SQLite** database on each startup
+— no on-disk DB, nothing to reset.
+
+## Deploying to SAP BTP later
+
+Files for Cloud Foundry deployment (`mta.yaml`, `xs-security.json`, the
+`approuter/` module) are present in the repo and remain valid, but you do
+**not** need them to run locally. They become relevant only when you decide
+to deploy. Ignore them for now.

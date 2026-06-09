@@ -37,7 +37,7 @@
       },
       "db": {
         "[production]": { "kind": "hana-cloud" },
-        "[development]": { "kind": "sqlite", "credentials": { "url": "db.sqlite" } }
+        "[development]": { "kind": "sqlite", "credentials": { "url": ":memory:" } }
       }
     },
     "hana": { "deploy-format": "hdbtable" }
