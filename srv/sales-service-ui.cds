@@ -40,26 +40,7 @@ annotate SalesService.BusinessPartnerSalesOrders with @(
       { Property : itemPosition, Descending : false }
     ],
     GroupBy : [ companyName, salesOrderID ],
-    Total   : [ convertedAmount ],
     Visualizations : [ '@UI.LineItem' ]
-  },
-
-  // Declares analytical capability of the service. CAP already answers
-  // $apply=groupby(...)aggregate(...) correctly; this annotation tells
-  // the Fiori Elements client that it is safe to fire those requests.
-  Aggregation.ApplySupported : {
-    Transformations        : [
-      'aggregate', 'groupby', 'filter', 'search',
-      'topcount', 'bottomcount', 'identity', 'concat',
-      'orderby', 'top', 'skip'
-    ],
-    Rollup                 : #None,
-    PropertyRestrictions   : true,
-    GroupableProperties    : [ companyName, salesOrderID, country, city, currency ],
-    AggregatableProperties : [
-      { Property : convertedAmount },
-      { Property : salesOrderCount }
-    ]
   }
 );
 
