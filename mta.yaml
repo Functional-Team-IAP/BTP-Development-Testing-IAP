@@ -1,9 +1,7 @@
 _schema-version: "3.3"
 ID: btp-business-partner-sales-orders
-description: Fiori Elements List Report (grouping) for Business Partner Sales Orders
+description: Fiori Elements List Report for Business Partner Sales Orders (slim POC - 200 MB CF MEMORY budget)
 version: 1.0.0
-parameters:
-  enable-parallel-deployments: true
 
 build-parameters:
   before-all:
@@ -11,99 +9,25 @@ build-parameters:
       commands:
         - npm ci
         - npx cds build --production
+        - mkdir -p gen/srv/app/businesspartnersalesorders gen/srv/db/data
+        - cp -r app/businesspartnersalesorders/webapp gen/srv/app/businesspartnersalesorders/
+        - cp -r db/data/. gen/srv/db/data/
 
 modules:
-  # ---------- CAP service (in-memory SQLite for POC) ----------
+  # ---------- Single CAP service that also serves the static UI ----------
+  # With only 200 MB of CF Runtime MEMORY entitled in the subaccount,
+  # we collapse the whole app into one Node.js buildpack module:
+  #   * CAP serves the OData V4 service at /sales/
+  #   * CAP serves the static Fiori app at /businesspartnersalesorders/webapp/
+  #   * Auth is set to "dummy" in package.json so no XSUAA / approuter
+  #     are required (anonymous demo). The xs-security.json and the
+  #     approuter/ folder remain in the repo for the future HANA path.
   - name: btp-bp-sales-srv
     type: nodejs
     path: gen/srv
     parameters:
       buildpack: nodejs_buildpack
-      memory: 512M
-      disk-quota: 512M
-      readiness-health-check-type: http
-      readiness-health-check-http-endpoint: /health
+      memory: 192M
+      disk-quota: 256M
     build-parameters:
       builder: npm
-    provides:
-      - name: srv-api
-        properties:
-          srv-url: ${default-url}
-    requires:
-      - name: btp-bp-sales-uaa
-
-  # ---------- HTML5 apps content uploader ----------
-  - name: btp-bp-sales-app-content
-    type: com.sap.application.content
-    path: .
-    requires:
-      - name: btp-bp-sales-html5-repo-host
-        parameters:
-          content-target: true
-    build-parameters:
-      build-result: resources
-      requires:
-        - artifacts:
-            - businesspartnersalesorders.zip
-          name: businesspartnersalesorders
-          target-path: resources/
-
-  # ---------- The UI5 app build ----------
-  - name: businesspartnersalesorders
-    type: html5
-    path: app/businesspartnersalesorders
-    build-parameters:
-      builder: custom
-      commands:
-        - npm install
-        - npm run build
-      supported-platforms: []
-      build-result: dist
-
-  # ---------- Approuter ----------
-  - name: btp-bp-sales-approuter
-    type: approuter.nodejs
-    path: approuter
-    parameters:
-      keep-existing-routes: true
-      disk-quota: 256M
-      memory: 256M
-    requires:
-      - name: srv-api
-        group: destinations
-        properties:
-          name: srv-api
-          url: ~{srv-url}
-          forwardAuthToken: true
-      - name: btp-bp-sales-uaa
-      - name: btp-bp-sales-html5-repo-rt
-      - name: btp-bp-sales-destination
-
-resources:
-  - name: btp-bp-sales-uaa
-    type: org.cloudfoundry.managed-service
-    parameters:
-      service: xsuaa
-      service-plan: application
-      path: ./xs-security.json
-      config:
-        xsappname: btp-bp-sales-${space}
-        tenant-mode: dedicated
-
-  - name: btp-bp-sales-html5-repo-host
-    type: org.cloudfoundry.managed-service
-    parameters:
-      service: html5-apps-repo
-      service-plan: app-host
-
-  - name: btp-bp-sales-html5-repo-rt
-    type: org.cloudfoundry.managed-service
-    parameters:
-      service: html5-apps-repo
-      service-plan: app-runtime
-
-  - name: btp-bp-sales-destination
-    type: org.cloudfoundry.managed-service
-    parameters:
-      service: destination
-      service-plan: lite

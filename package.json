@@ -28,7 +28,7 @@
     "requires": {
       "auth": {
         "[production]": {
-          "kind": "xsuaa"
+          "kind": "dummy"
         },
         "[development]": {
           "kind": "mocked",
