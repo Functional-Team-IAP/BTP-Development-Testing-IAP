@@ -87,7 +87,7 @@
               "controlConfiguration": {
                 "@com.sap.vocabularies.UI.v1.LineItem": {
                   "tableSettings": {
-                    "type": "AnalyticalTable",
+                    "type": "TreeTable",
                     "personalization": {
                       "sort": true,
                       "column": true,
