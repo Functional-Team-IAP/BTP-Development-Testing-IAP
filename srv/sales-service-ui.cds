@@ -2,7 +2,6 @@ using SalesService from './sales-service';
 
 annotate SalesService.BusinessPartnerSalesOrders with @(
 
-  // ---------- header ----------
   UI.HeaderInfo : {
     TypeName       : 'Sales Order Item',
     TypeNamePlural : 'Business Partner Sales Orders',
@@ -10,7 +9,6 @@ annotate SalesService.BusinessPartnerSalesOrders with @(
     Description    : { Value : salesOrderID }
   },
 
-  // ---------- filter bar ----------
   UI.SelectionFields : [
     companyName,
     country,
@@ -19,7 +17,6 @@ annotate SalesService.BusinessPartnerSalesOrders with @(
     salesOrderID
   ],
 
-  // ---------- columns (line item) ----------
   UI.LineItem : [
     { $Type : 'UI.DataField', Value : companyName,     Label : 'Company Name' },
     { $Type : 'UI.DataField', Value : salesOrderID,    Label : 'Sales Order ID' },
@@ -31,39 +28,8 @@ annotate SalesService.BusinessPartnerSalesOrders with @(
     { $Type : 'UI.DataField', Value : salesOrderCount, Label : 'Sales Order Count' }
   ],
 
-  // ---------- aggregation contract ----------
-  Aggregation.ApplySupported : {
-    Transformations         : [
-      'aggregate', 'groupby', 'filter', 'search',
-      'topcount', 'bottomcount', 'identity', 'concat',
-      'orderby', 'top', 'skip'
-    ],
-    Rollup                  : #None,
-    PropertyRestrictions    : true,
-    GroupableProperties     : [ companyName, salesOrderID, country, city, currency ],
-    AggregatableProperties  : [
-      { Property : convertedAmount },
-      { Property : salesOrderCount }
-    ]
-  },
-
-  // ---------- chart (required by ALP template) ----------
-  UI.Chart : {
-    Title          : 'Sales by Company / Order',
-    ChartType      : #Column,
-    Dimensions     : [ companyName, salesOrderID ],
-    DynamicMeasures : [ '@Analytics.AggregatedProperty#totalConvertedAmount' ],
-    DimensionAttributes : [
-      { Dimension : companyName,  Role : #Category },
-      { Dimension : salesOrderID, Role : #Series   }
-    ],
-    MeasureAttributes : [{
-      DynamicMeasure : '@Analytics.AggregatedProperty#totalConvertedAmount',
-      Role           : #Axis1
-    }]
-  },
-
-  // ---------- presentation: two-level group, totals ----------
+  // Default 2-level grouping (Company Name -> Sales Order ID), with a
+  // sort key per group so line items appear in their natural order.
   UI.PresentationVariant : {
     SortOrder : [
       { Property : companyName,  Descending : false },
@@ -72,41 +38,17 @@ annotate SalesService.BusinessPartnerSalesOrders with @(
     ],
     GroupBy : [ companyName, salesOrderID ],
     Total   : [ convertedAmount ],
-    Visualizations : [
-      '@UI.Chart',
-      '@UI.LineItem'
-    ]
-  },
-
-  // ---------- selection x presentation: default landing variant ----------
-  UI.SelectionPresentationVariant #default : {
-    Text                : 'Default',
-    SelectionVariant    : { SelectOptions : [] },
-    PresentationVariant : ![@UI.PresentationVariant]
+    Visualizations : [ '@UI.LineItem' ]
   }
 );
 
-// ---------- analytical measure (named, referenced by chart) ----------
-annotate SalesService.BusinessPartnerSalesOrders with @(
-  Analytics.AggregatedProperty #totalConvertedAmount : {
-    Name                  : 'totalConvertedAmount',
-    AggregationMethod     : 'sum',
-    AggregatableProperty  : convertedAmount,
-    ![@Common.Label]      : 'Total Converted Amount'
-  }
-);
-
-// ---------- field labels, semantic hints, default aggregation ----------
 annotate SalesService.BusinessPartnerSalesOrders with {
   companyName     @title : 'Company Name';
   salesOrderID    @title : 'Sales Order ID';
   itemPosition    @title : 'Item Position';
   city            @title : 'City';
   country         @title : 'Country';
-  convertedAmount @title : 'Converted Amount'
-                  @Measures.ISOCurrency : currency
-                  @Aggregation.default  : #SUM;
+  convertedAmount @title : 'Converted Amount'  @Measures.ISOCurrency : currency;
   currency        @title : 'Currency';
-  salesOrderCount @title : 'Sales Order Count'
-                  @Aggregation.default  : #SUM;
+  salesOrderCount @title : 'Sales Order Count';
 };

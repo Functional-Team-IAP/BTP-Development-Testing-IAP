@@ -84,28 +84,21 @@
         "BusinessPartnerSalesOrdersList": {
           "type": "Component",
           "id": "BusinessPartnerSalesOrdersList",
-          "name": "sap.fe.templates.AnalyticalListPage",
+          "name": "sap.fe.templates.ListReport",
           "options": {
             "settings": {
               "contextPath": "/BusinessPartnerSalesOrders",
               "variantManagement": "None",
               "initialLoad": "Enabled",
-              "defaultTemplateAnnotationPath": "com.sap.vocabularies.UI.v1.SelectionPresentationVariant#default",
               "controlConfiguration": {
-                "@com.sap.vocabularies.UI.v1.Chart": {
-                  "chartSettings": {
-                    "personalization": true
-                  }
-                },
                 "@com.sap.vocabularies.UI.v1.LineItem": {
                   "tableSettings": {
-                    "type": "AnalyticalTable",
+                    "type": "ResponsiveTable",
                     "personalization": {
                       "sort": true,
                       "column": true,
                       "filter": true,
-                      "group": true,
-                      "aggregate": true
+                      "group": true
                     },
                     "selectAll": true,
                     "selectionMode": "Multi"
