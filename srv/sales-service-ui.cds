@@ -28,10 +28,11 @@ annotate SalesService.BusinessPartnerSalesOrders with @(
     { $Type : 'UI.DataField', Value : salesOrderCount, Label : 'Sales Order Count' }
   ],
 
-  // Default two-level grouping for the Fiori Elements V2 List Report.
-  // With tableType "GridTable" in the manifest, FE V2 auto-promotes to
-  // a Tree Table when GroupBy is present, and Total is honoured as
-  // running subtotals at every group level + a grand total.
+  // Two-level grouping (Company Name -> Sales Order ID) with running
+  // subtotals on the converted amount. In a real BTP Fiori Launchpad
+  // shell, sap.fe.templates renders the AnalyticalTable with auto
+  // expand / collapse + per-group subtotals + a grand total row,
+  // driven by OData V4 $apply requests against the CAP service.
   UI.PresentationVariant : {
     SortOrder : [
       { Property : companyName,  Descending : false },
@@ -41,6 +42,24 @@ annotate SalesService.BusinessPartnerSalesOrders with @(
     GroupBy : [ companyName, salesOrderID ],
     Total   : [ convertedAmount ],
     Visualizations : [ '@UI.LineItem' ]
+  },
+
+  // Declares analytical capability of the service. CAP already answers
+  // $apply=groupby(...)aggregate(...) correctly; this annotation tells
+  // the Fiori Elements client that it is safe to fire those requests.
+  Aggregation.ApplySupported : {
+    Transformations        : [
+      'aggregate', 'groupby', 'filter', 'search',
+      'topcount', 'bottomcount', 'identity', 'concat',
+      'orderby', 'top', 'skip'
+    ],
+    Rollup                 : #None,
+    PropertyRestrictions   : true,
+    GroupableProperties    : [ companyName, salesOrderID, country, city, currency ],
+    AggregatableProperties : [
+      { Property : convertedAmount },
+      { Property : salesOrderCount }
+    ]
   }
 );
 
@@ -50,7 +69,10 @@ annotate SalesService.BusinessPartnerSalesOrders with {
   itemPosition    @title : 'Item Position';
   city            @title : 'City';
   country         @title : 'Country';
-  convertedAmount @title : 'Converted Amount'  @Measures.ISOCurrency : currency;
+  convertedAmount @title : 'Converted Amount'
+                  @Measures.ISOCurrency : currency
+                  @Aggregation.default  : #SUM;
   currency        @title : 'Currency';
-  salesOrderCount @title : 'Sales Order Count';
+  salesOrderCount @title : 'Sales Order Count'
+                  @Aggregation.default  : #SUM;
 };
