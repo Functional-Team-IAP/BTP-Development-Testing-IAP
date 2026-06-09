@@ -70,9 +70,7 @@ annotate SalesService.BusinessPartnerSalesOrders with {
   city            @title : 'City';
   country         @title : 'Country';
   convertedAmount @title : 'Converted Amount'
-                  @Measures.ISOCurrency : currency
-                  @Aggregation.default  : #SUM;
+                  @Measures.ISOCurrency : currency;
   currency        @title : 'Currency';
-  salesOrderCount @title : 'Sales Order Count'
-                  @Aggregation.default  : #SUM;
+  salesOrderCount @title : 'Sales Order Count';
 };
