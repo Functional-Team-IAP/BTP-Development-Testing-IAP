@@ -81,19 +81,18 @@
           "name": "sap.fe.templates.ListReport",
           "options": {
             "settings": {
-              "contextPath": "/BusinessPartnerSalesOrders",
+              "contextPath": "/BPSalesTree",
               "variantManagement": "None",
               "initialLoad": "Enabled",
               "controlConfiguration": {
                 "@com.sap.vocabularies.UI.v1.LineItem": {
                   "tableSettings": {
-                    "type": "AnalyticalTable",
+                    "type": "TreeTable",
+                    "hierarchyQualifier": "salesHier",
                     "personalization": {
                       "sort": true,
                       "column": true,
-                      "filter": true,
-                      "group": true,
-                      "aggregate": true
+                      "filter": true
                     },
                     "selectAll": true,
                     "selectionMode": "Multi"

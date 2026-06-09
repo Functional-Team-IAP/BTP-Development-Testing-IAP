@@ -1,0 +1,66 @@
+nodeID,parentID,hierarchyLevel,drillState,companyName,salesOrderID,itemPosition,city,country,convertedAmount,currency,salesOrderCount
+C-AVANTEL,,1,expanded,AVANTEL,,,Mexico City,MX,926663.53,MXN,25
+O-AVANTEL-600000001,C-AVANTEL,2,collapsed,AVANTEL,600000001,,Mexico City,MX,253065.75,MXN,10
+I-AVANTEL-600000001-10,O-AVANTEL-600000001,3,leaf,AVANTEL,600000001,10,Mexico City,MX,154320.5,MXN,5
+I-AVANTEL-600000001-20,O-AVANTEL-600000001,3,leaf,AVANTEL,600000001,20,Mexico City,MX,98745.25,MXN,5
+O-AVANTEL-600000002,C-AVANTEL,2,collapsed,AVANTEL,600000002,,Mexico City,MX,401080.78,MXN,10
+I-AVANTEL-600000002-10,O-AVANTEL-600000002,3,leaf,AVANTEL,600000002,10,Mexico City,MX,213450.78,MXN,5
+I-AVANTEL-600000002-20,O-AVANTEL-600000002,3,leaf,AVANTEL,600000002,20,Mexico City,MX,187630,MXN,5
+O-AVANTEL-600000003,C-AVANTEL,2,collapsed,AVANTEL,600000003,,Mexico City,MX,272517,MXN,5
+I-AVANTEL-600000003-10,O-AVANTEL-600000003,3,leaf,AVANTEL,600000003,10,Mexico City,MX,272517,MXN,5
+C-Asia High tech,,1,expanded,Asia High tech,,,100-0004 Tokyo,JP,14428896,JPY,450
+O-Asia High tech-500000003,C-Asia High tech,2,collapsed,Asia High tech,500000003,,100-0004 Tokyo,JP,93124,JPY,50
+I-Asia High tech-500000003-10,O-Asia High tech-500000003,3,leaf,Asia High tech,500000003,10,100-0004 Tokyo,JP,56973,JPY,10
+I-Asia High tech-500000003-20,O-Asia High tech-500000003,3,leaf,Asia High tech,500000003,20,100-0004 Tokyo,JP,1128,JPY,10
+I-Asia High tech-500000003-30,O-Asia High tech-500000003,3,leaf,Asia High tech,500000003,30,100-0004 Tokyo,JP,8829,JPY,10
+I-Asia High tech-500000003-40,O-Asia High tech-500000003,3,leaf,Asia High tech,500000003,40,100-0004 Tokyo,JP,23077,JPY,10
+I-Asia High tech-500000003-50,O-Asia High tech-500000003,3,leaf,Asia High tech,500000003,50,100-0004 Tokyo,JP,3117,JPY,10
+O-Asia High tech-500000004,C-Asia High tech,2,collapsed,Asia High tech,500000004,,100-0004 Tokyo,JP,84316,JPY,50
+I-Asia High tech-500000004-10,O-Asia High tech-500000004,3,leaf,Asia High tech,500000004,10,100-0004 Tokyo,JP,24552,JPY,10
+I-Asia High tech-500000004-20,O-Asia High tech-500000004,3,leaf,Asia High tech,500000004,20,100-0004 Tokyo,JP,10839,JPY,10
+I-Asia High tech-500000004-30,O-Asia High tech-500000004,3,leaf,Asia High tech,500000004,30,100-0004 Tokyo,JP,18844,JPY,10
+I-Asia High tech-500000004-40,O-Asia High tech-500000004,3,leaf,Asia High tech,500000004,40,100-0004 Tokyo,JP,10446,JPY,10
+I-Asia High tech-500000004-50,O-Asia High tech-500000004,3,leaf,Asia High tech,500000004,50,100-0004 Tokyo,JP,19635,JPY,10
+O-Asia High tech-500000013,C-Asia High tech,2,collapsed,Asia High tech,500000013,,100-0004 Tokyo,JP,867399,JPY,60
+I-Asia High tech-500000013-10,O-Asia High tech-500000013,3,leaf,Asia High tech,500000013,10,100-0004 Tokyo,JP,229272,JPY,10
+I-Asia High tech-500000013-20,O-Asia High tech-500000013,3,leaf,Asia High tech,500000013,20,100-0004 Tokyo,JP,209745,JPY,10
+I-Asia High tech-500000013-30,O-Asia High tech-500000013,3,leaf,Asia High tech,500000013,30,100-0004 Tokyo,JP,62404,JPY,10
+I-Asia High tech-500000013-40,O-Asia High tech-500000013,3,leaf,Asia High tech,500000013,40,100-0004 Tokyo,JP,116600,JPY,10
+I-Asia High tech-500000013-50,O-Asia High tech-500000013,3,leaf,Asia High tech,500000013,50,100-0004 Tokyo,JP,140409,JPY,10
+I-Asia High tech-500000013-60,O-Asia High tech-500000013,3,leaf,Asia High tech,500000013,60,100-0004 Tokyo,JP,108969,JPY,10
+O-Asia High tech-500000014,C-Asia High tech,2,collapsed,Asia High tech,500000014,,100-0004 Tokyo,JP,377138,JPY,50
+I-Asia High tech-500000014-10,O-Asia High tech-500000014,3,leaf,Asia High tech,500000014,10,100-0004 Tokyo,JP,98234,JPY,10
+I-Asia High tech-500000014-20,O-Asia High tech-500000014,3,leaf,Asia High tech,500000014,20,100-0004 Tokyo,JP,74512,JPY,10
+I-Asia High tech-500000014-30,O-Asia High tech-500000014,3,leaf,Asia High tech,500000014,30,100-0004 Tokyo,JP,105673,JPY,10
+I-Asia High tech-500000014-40,O-Asia High tech-500000014,3,leaf,Asia High tech,500000014,40,100-0004 Tokyo,JP,58291,JPY,10
+I-Asia High tech-500000014-50,O-Asia High tech-500000014,3,leaf,Asia High tech,500000014,50,100-0004 Tokyo,JP,40428,JPY,10
+O-Asia High tech-500000022,C-Asia High tech,2,collapsed,Asia High tech,500000022,,100-0004 Tokyo,JP,59604,JPY,40
+I-Asia High tech-500000022-10,O-Asia High tech-500000022,3,leaf,Asia High tech,500000022,10,100-0004 Tokyo,JP,18750,JPY,10
+I-Asia High tech-500000022-20,O-Asia High tech-500000022,3,leaf,Asia High tech,500000022,20,100-0004 Tokyo,JP,22104,JPY,10
+I-Asia High tech-500000022-30,O-Asia High tech-500000022,3,leaf,Asia High tech,500000022,30,100-0004 Tokyo,JP,10300,JPY,10
+I-Asia High tech-500000022-40,O-Asia High tech-500000022,3,leaf,Asia High tech,500000022,40,100-0004 Tokyo,JP,8450,JPY,10
+O-Asia High tech-500000030,C-Asia High tech,2,collapsed,Asia High tech,500000030,,100-0004 Tokyo,JP,11053774,JPY,50
+I-Asia High tech-500000030-10,O-Asia High tech-500000030,3,leaf,Asia High tech,500000030,10,100-0004 Tokyo,JP,1843200,JPY,10
+I-Asia High tech-500000030-20,O-Asia High tech-500000030,3,leaf,Asia High tech,500000030,20,100-0004 Tokyo,JP,2156780,JPY,10
+I-Asia High tech-500000030-30,O-Asia High tech-500000030,3,leaf,Asia High tech,500000030,30,100-0004 Tokyo,JP,3012450,JPY,10
+I-Asia High tech-500000030-40,O-Asia High tech-500000030,3,leaf,Asia High tech,500000030,40,100-0004 Tokyo,JP,1987600,JPY,10
+I-Asia High tech-500000030-50,O-Asia High tech-500000030,3,leaf,Asia High tech,500000030,50,100-0004 Tokyo,JP,2053744,JPY,10
+O-Asia High tech-500000032,C-Asia High tech,2,collapsed,Asia High tech,500000032,,100-0004 Tokyo,JP,1047389,JPY,40
+I-Asia High tech-500000032-10,O-Asia High tech-500000032,3,leaf,Asia High tech,500000032,10,100-0004 Tokyo,JP,312450,JPY,10
+I-Asia High tech-500000032-20,O-Asia High tech-500000032,3,leaf,Asia High tech,500000032,20,100-0004 Tokyo,JP,289300,JPY,10
+I-Asia High tech-500000032-30,O-Asia High tech-500000032,3,leaf,Asia High tech,500000032,30,100-0004 Tokyo,JP,198750,JPY,10
+I-Asia High tech-500000032-40,O-Asia High tech-500000032,3,leaf,Asia High tech,500000032,40,100-0004 Tokyo,JP,246889,JPY,10
+O-Asia High tech-500000038,C-Asia High tech,2,collapsed,Asia High tech,500000038,,100-0004 Tokyo,JP,486219,JPY,40
+I-Asia High tech-500000038-10,O-Asia High tech-500000038,3,leaf,Asia High tech,500000038,10,100-0004 Tokyo,JP,156780,JPY,10
+I-Asia High tech-500000038-20,O-Asia High tech-500000038,3,leaf,Asia High tech,500000038,20,100-0004 Tokyo,JP,143290,JPY,10
+I-Asia High tech-500000038-30,O-Asia High tech-500000038,3,leaf,Asia High tech,500000038,30,100-0004 Tokyo,JP,98450,JPY,10
+I-Asia High tech-500000038-40,O-Asia High tech-500000038,3,leaf,Asia High tech,500000038,40,100-0004 Tokyo,JP,87699,JPY,10
+O-Asia High tech-500000039,C-Asia High tech,2,collapsed,Asia High tech,500000039,,100-0004 Tokyo,JP,319851,JPY,60
+I-Asia High tech-500000039-10,O-Asia High tech-500000039,3,leaf,Asia High tech,500000039,10,100-0004 Tokyo,JP,112599,JPY,10
+I-Asia High tech-500000039-20,O-Asia High tech-500000039,3,leaf,Asia High tech,500000039,20,100-0004 Tokyo,JP,133821,JPY,10
+I-Asia High tech-500000039-30,O-Asia High tech-500000039,3,leaf,Asia High tech,500000039,30,100-0004 Tokyo,JP,47346,JPY,10
+I-Asia High tech-500000039-40,O-Asia High tech-500000039,3,leaf,Asia High tech,500000039,40,100-0004 Tokyo,JP,1215,JPY,10
+I-Asia High tech-500000039-50,O-Asia High tech-500000039,3,leaf,Asia High tech,500000039,50,100-0004 Tokyo,JP,936,JPY,10
+I-Asia High tech-500000039-60,O-Asia High tech-500000039,3,leaf,Asia High tech,500000039,60,100-0004 Tokyo,JP,23934,JPY,10
+O-Asia High tech-500000048,C-Asia High tech,2,collapsed,Asia High tech,500000048,,100-0004 Tokyo,JP,40082,JPY,10
+I-Asia High tech-500000048-10,O-Asia High tech-500000048,3,leaf,Asia High tech,500000048,10,100-0004 Tokyo,JP,40082,JPY,10

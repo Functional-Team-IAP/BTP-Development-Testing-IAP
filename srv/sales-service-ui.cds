@@ -1,9 +1,20 @@
 using SalesService from './sales-service';
 
-annotate SalesService.BusinessPartnerSalesOrders with @(
+annotate SalesService.BPSalesTree with @(
 
+  // Declare the recursive hierarchy. NodeProperty is the unique id of
+  // each row, ParentNavigationProperty is the self-association that
+  // points each row at its parent. FE V4 TreeTable looks this up via
+  // the qualifier set in the manifest (tableSettings.hierarchyQualifier
+  // = "salesHier").
+  Aggregation.RecursiveHierarchy #salesHier : {
+    NodeProperty             : nodeID,
+    ParentNavigationProperty : Parent
+  },
+
+  // ---------- Header / filter / columns ----------
   UI.HeaderInfo : {
-    TypeName       : 'Sales Order Item',
+    TypeName       : 'Sales Hierarchy Node',
     TypeNamePlural : 'Business Partner Sales Orders',
     Title          : { Value : companyName },
     Description    : { Value : salesOrderID }
@@ -28,23 +39,15 @@ annotate SalesService.BusinessPartnerSalesOrders with @(
     { $Type : 'UI.DataField', Value : salesOrderCount, Label : 'Sales Order Count' }
   ],
 
-  // Two-level grouping (Company Name -> Sales Order ID) with running
-  // subtotals on the converted amount. In a real BTP Fiori Launchpad
-  // shell, sap.fe.templates renders the AnalyticalTable with auto
-  // expand / collapse + per-group subtotals + a grand total row,
-  // driven by OData V4 $apply requests against the CAP service.
   UI.PresentationVariant : {
-    SortOrder : [
-      { Property : companyName,  Descending : false },
-      { Property : salesOrderID, Descending : false },
-      { Property : itemPosition, Descending : false }
-    ],
-    GroupBy : [ companyName, salesOrderID ],
     Visualizations : [ '@UI.LineItem' ]
   }
 );
 
-annotate SalesService.BusinessPartnerSalesOrders with {
+annotate SalesService.BPSalesTree with {
+  nodeID          @title : 'Node ID';
+  parentID        @title : 'Parent ID';
+  hierarchyLevel  @title : 'Level';
   companyName     @title : 'Company Name';
   salesOrderID    @title : 'Sales Order ID';
   itemPosition    @title : 'Item Position';
