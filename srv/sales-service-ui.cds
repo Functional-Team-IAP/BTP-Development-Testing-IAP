@@ -1,6 +1,8 @@
 using SalesService from './sales-service';
 
 annotate SalesService.BusinessPartnerSalesOrders with @(
+
+  // ---------- header ----------
   UI.HeaderInfo : {
     TypeName       : 'Sales Order Item',
     TypeNamePlural : 'Business Partner Sales Orders',
@@ -8,6 +10,7 @@ annotate SalesService.BusinessPartnerSalesOrders with @(
     Description    : { Value : salesOrderID }
   },
 
+  // ---------- filter bar ----------
   UI.SelectionFields : [
     companyName,
     country,
@@ -16,6 +19,7 @@ annotate SalesService.BusinessPartnerSalesOrders with @(
     salesOrderID
   ],
 
+  // ---------- columns (line item) ----------
   UI.LineItem : [
     { $Type : 'UI.DataField', Value : companyName,     Label : 'Company Name' },
     { $Type : 'UI.DataField', Value : salesOrderID,    Label : 'Sales Order ID' },
@@ -27,22 +31,7 @@ annotate SalesService.BusinessPartnerSalesOrders with @(
     { $Type : 'UI.DataField', Value : salesOrderCount, Label : 'Sales Order Count' }
   ],
 
-  // Two-level tree-style grouping (Company Name -> Sales Order ID) with
-  // running subtotals on the converted amount at each group level.
-  UI.PresentationVariant : {
-    SortOrder : [
-      { Property : companyName,  Descending : false },
-      { Property : salesOrderID, Descending : false },
-      { Property : itemPosition, Descending : false }
-    ],
-    GroupBy : [ companyName, salesOrderID ],
-    Total   : [ convertedAmount ],
-    Visualizations : [ '@UI.LineItem' ]
-  },
-
-  // Declare analytical capabilities so the List Report can render
-  // running subtotals at every group level. Without this, FE only
-  // applies a single-level visual grouping with no aggregation.
+  // ---------- aggregation contract ----------
   Aggregation.ApplySupported : {
     Transformations         : [
       'aggregate', 'groupby', 'filter', 'search',
@@ -52,16 +41,62 @@ annotate SalesService.BusinessPartnerSalesOrders with @(
     Rollup                  : #None,
     PropertyRestrictions    : true,
     GroupableProperties     : [ companyName, salesOrderID, country, city, currency ],
-    AggregatableProperties  : [ { Property : convertedAmount }, { Property : salesOrderCount } ]
+    AggregatableProperties  : [
+      { Property : convertedAmount },
+      { Property : salesOrderCount }
+    ]
+  },
+
+  // ---------- chart (required by ALP template) ----------
+  UI.Chart : {
+    Title          : 'Sales by Company / Order',
+    ChartType      : #Column,
+    Dimensions     : [ companyName, salesOrderID ],
+    DynamicMeasures : [ '@Analytics.AggregatedProperty#totalConvertedAmount' ],
+    DimensionAttributes : [
+      { Dimension : companyName,  Role : #Category },
+      { Dimension : salesOrderID, Role : #Series   }
+    ],
+    MeasureAttributes : [{
+      DynamicMeasure : '@Analytics.AggregatedProperty#totalConvertedAmount',
+      Role           : #Axis1
+    }]
+  },
+
+  // ---------- presentation: two-level group, totals ----------
+  UI.PresentationVariant : {
+    SortOrder : [
+      { Property : companyName,  Descending : false },
+      { Property : salesOrderID, Descending : false },
+      { Property : itemPosition, Descending : false }
+    ],
+    GroupBy : [ companyName, salesOrderID ],
+    Total   : [ convertedAmount ],
+    Visualizations : [
+      '@UI.Chart',
+      '@UI.LineItem'
+    ]
+  },
+
+  // ---------- selection x presentation: default landing variant ----------
+  UI.SelectionPresentationVariant #default : {
+    Text                : 'Default',
+    SelectionVariant    : { SelectOptions : [] },
+    PresentationVariant : ![@UI.PresentationVariant]
   }
 );
 
-// Field-level labels & semantic hints.
-// @Aggregation.default was removed: with the AnalyticalTable rendering
-// path that sap.fe.templates ListReport actually uses here, marking
-// numeric properties as measures hides their raw values in every row
-// (the framework only shows aggregated values, but no $apply requests
-// were ever fired by the table). Keep them as plain properties.
+// ---------- analytical measure (named, referenced by chart) ----------
+annotate SalesService.BusinessPartnerSalesOrders with @(
+  Analytics.AggregatedProperty #totalConvertedAmount : {
+    Name                  : 'totalConvertedAmount',
+    AggregationMethod     : 'sum',
+    AggregatableProperty  : convertedAmount,
+    ![@Common.Label]      : 'Total Converted Amount'
+  }
+);
+
+// ---------- field labels, semantic hints, default aggregation ----------
 annotate SalesService.BusinessPartnerSalesOrders with {
   companyName     @title : 'Company Name';
   salesOrderID    @title : 'Sales Order ID';
@@ -69,7 +104,9 @@ annotate SalesService.BusinessPartnerSalesOrders with {
   city            @title : 'City';
   country         @title : 'Country';
   convertedAmount @title : 'Converted Amount'
-                  @Measures.ISOCurrency : currency;
+                  @Measures.ISOCurrency : currency
+                  @Aggregation.default  : #SUM;
   currency        @title : 'Currency';
-  salesOrderCount @title : 'Sales Order Count';
+  salesOrderCount @title : 'Sales Order Count'
+                  @Aggregation.default  : #SUM;
 };
