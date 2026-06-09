@@ -93,12 +93,13 @@
               "controlConfiguration": {
                 "@com.sap.vocabularies.UI.v1.LineItem": {
                   "tableSettings": {
-                    "type": "ResponsiveTable",
+                    "type": "GridTable",
                     "personalization": {
                       "sort": true,
                       "column": true,
                       "filter": true,
-                      "group": true
+                      "group": true,
+                      "aggregate": true
                     },
                     "selectAll": true,
                     "selectionMode": "Multi"

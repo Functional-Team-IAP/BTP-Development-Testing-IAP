@@ -38,17 +38,35 @@ annotate SalesService.BusinessPartnerSalesOrders with @(
     GroupBy : [ companyName, salesOrderID ],
     Total   : [ convertedAmount ],
     Visualizations : [ '@UI.LineItem' ]
+  },
+
+  // Declare analytical capabilities so the List Report can render
+  // running subtotals at every group level. Without this, FE only
+  // applies a single-level visual grouping with no aggregation.
+  Aggregation.ApplySupported : {
+    Transformations         : [
+      'aggregate', 'groupby', 'filter', 'search',
+      'topcount', 'bottomcount', 'identity', 'concat',
+      'orderby', 'top', 'skip'
+    ],
+    Rollup                  : #None,
+    PropertyRestrictions    : true,
+    GroupableProperties     : [ companyName, salesOrderID, country, city, currency ],
+    AggregatableProperties  : [ { Property : convertedAmount }, { Property : salesOrderCount } ]
   }
 );
 
-// Field-level labels & semantic hints
+// Field-level labels, semantics, and default aggregation behaviour
 annotate SalesService.BusinessPartnerSalesOrders with {
   companyName     @title : 'Company Name';
   salesOrderID    @title : 'Sales Order ID';
   itemPosition    @title : 'Item Position';
   city            @title : 'City';
   country         @title : 'Country';
-  convertedAmount @title : 'Converted Amount'  @Measures.ISOCurrency : currency;
+  convertedAmount @title : 'Converted Amount'
+                  @Measures.ISOCurrency : currency
+                  @Aggregation.default  : #SUM;
   currency        @title : 'Currency';
-  salesOrderCount @title : 'Sales Order Count';
+  salesOrderCount @title : 'Sales Order Count'
+                  @Aggregation.default  : #SUM;
 };
