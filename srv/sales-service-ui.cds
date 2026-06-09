@@ -27,14 +27,16 @@ annotate SalesService.BusinessPartnerSalesOrders with @(
     { $Type : 'UI.DataField', Value : salesOrderCount, Label : 'Sales Order Count' }
   ],
 
-  // Initial grouping by Company Name + Country, sorted by amount descending.
-  // The Fiori Elements List Report uses GroupBy to render visually grouped rows.
+  // Two-level tree-style grouping (Company Name -> Sales Order ID) with
+  // running subtotals on the converted amount at each group level.
   UI.PresentationVariant : {
     SortOrder : [
-      { Property : companyName, Descending : false },
-      { Property : convertedAmount, Descending : true }
+      { Property : companyName,  Descending : false },
+      { Property : salesOrderID, Descending : false },
+      { Property : itemPosition, Descending : false }
     ],
-    GroupBy : [ companyName, country ],
+    GroupBy : [ companyName, salesOrderID ],
+    Total   : [ convertedAmount ],
     Visualizations : [ '@UI.LineItem' ]
   }
 );
