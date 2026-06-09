@@ -1,0 +1,48 @@
+{
+  "name": "btp-business-partner-sales-orders",
+  "version": "1.0.0",
+  "description": "Fiori Elements List Report with grouping for Business Partner Sales Orders on SAP BTP",
+  "repository": "<add your repo>",
+  "license": "UNLICENSED",
+  "private": true,
+  "dependencies": {
+    "@cap-js/hana": "^1",
+    "@sap/cds": "^8",
+    "@sap/xssec": "^4",
+    "express": "^4",
+    "passport": "^0.7"
+  },
+  "devDependencies": {
+    "@cap-js/sqlite": "^1",
+    "@sap/cds-dk": "^8",
+    "rimraf": "^5"
+  },
+  "scripts": {
+    "start": "cds-serve",
+    "watch-businesspartnersalesorders": "cds watch --open businesspartnersalesorders/webapp/index.html?sap-ui-xx-viewCache=false",
+    "build": "rimraf resources mta_archives && mbt build --mtar archive"
+  },
+  "cds": {
+    "requires": {
+      "auth": {
+        "[production]": {
+          "kind": "xsuaa"
+        },
+        "[development]": {
+          "kind": "mocked",
+          "users": {
+            "alice": { "roles": ["BPSalesViewer"] }
+          }
+        }
+      },
+      "db": {
+        "[production]": { "kind": "hana-cloud" },
+        "[development]": { "kind": "sqlite", "credentials": { "url": "db.sqlite" } }
+      }
+    },
+    "hana": { "deploy-format": "hdbtable" }
+  },
+  "sapux": [
+    "app/businesspartnersalesorders"
+  ]
+}

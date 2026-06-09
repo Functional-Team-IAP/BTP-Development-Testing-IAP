@@ -1,0 +1,20 @@
+{
+  "welcomeFile": "/businesspartnersalesorders/index.html",
+  "authenticationMethod": "route",
+  "sessionTimeout": 30,
+  "routes": [
+    {
+      "source": "^/sales/(.*)$",
+      "target": "/sales/$1",
+      "destination": "srv-api",
+      "authenticationType": "xsuaa",
+      "csrfProtection": true
+    },
+    {
+      "source": "^(.*)$",
+      "target": "$1",
+      "service": "html5-apps-repo-rt",
+      "authenticationType": "xsuaa"
+    }
+  ]
+}

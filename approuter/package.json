@@ -1,0 +1,12 @@
+{
+  "name": "btp-bp-sales-approuter",
+  "version": "1.0.0",
+  "description": "Application router for Business Partner Sales Orders",
+  "private": true,
+  "dependencies": {
+    "@sap/approuter": "^16"
+  },
+  "scripts": {
+    "start": "node node_modules/@sap/approuter/approuter.js"
+  }
+}

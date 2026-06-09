@@ -1,0 +1,26 @@
+{
+  "xsappname": "btp-bp-sales",
+  "tenant-mode": "dedicated",
+  "description": "Security profile for Business Partner Sales Orders",
+  "scopes": [
+    {
+      "name": "$XSAPPNAME.BPSalesViewer",
+      "description": "View Business Partner Sales Orders"
+    }
+  ],
+  "attributes": [],
+  "role-templates": [
+    {
+      "name": "BPSalesViewer",
+      "description": "View Business Partner Sales Orders",
+      "scope-references": ["$XSAPPNAME.BPSalesViewer"]
+    }
+  ],
+  "role-collections": [
+    {
+      "name": "BPSalesViewerRC",
+      "description": "Business Partner Sales Orders Viewer",
+      "role-template-references": ["$XSAPPNAME.BPSalesViewer"]
+    }
+  ]
+}
