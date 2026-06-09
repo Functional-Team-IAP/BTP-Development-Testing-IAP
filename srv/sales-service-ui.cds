@@ -56,7 +56,12 @@ annotate SalesService.BusinessPartnerSalesOrders with @(
   }
 );
 
-// Field-level labels, semantics, and default aggregation behaviour
+// Field-level labels & semantic hints.
+// @Aggregation.default was removed: with the AnalyticalTable rendering
+// path that sap.fe.templates ListReport actually uses here, marking
+// numeric properties as measures hides their raw values in every row
+// (the framework only shows aggregated values, but no $apply requests
+// were ever fired by the table). Keep them as plain properties.
 annotate SalesService.BusinessPartnerSalesOrders with {
   companyName     @title : 'Company Name';
   salesOrderID    @title : 'Sales Order ID';
@@ -64,9 +69,7 @@ annotate SalesService.BusinessPartnerSalesOrders with {
   city            @title : 'City';
   country         @title : 'Country';
   convertedAmount @title : 'Converted Amount'
-                  @Measures.ISOCurrency : currency
-                  @Aggregation.default  : #SUM;
+                  @Measures.ISOCurrency : currency;
   currency        @title : 'Currency';
-  salesOrderCount @title : 'Sales Order Count'
-                  @Aggregation.default  : #SUM;
+  salesOrderCount @title : 'Sales Order Count';
 };
