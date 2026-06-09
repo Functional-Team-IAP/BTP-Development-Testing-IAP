@@ -7,19 +7,17 @@
     "applicationVersion": { "version": "1.0.0" },
     "title": "{{appTitle}}",
     "description": "{{appDescription}}",
-    "resources": "resources.json",
     "sourceTemplate": {
-      "id": "@sap/generator-fiori:lrop",
-      "version": "1.13.4",
-      "toolsId": "iap-bp-sales-orders"
+      "id": "ui5template.smartTemplate",
+      "version": "1.40.12"
     },
     "dataSources": {
       "mainService": {
-        "uri": "/sales/",
+        "uri": "/v2/sales/",
         "type": "OData",
         "settings": {
-          "annotations": [],
-          "odataVersion": "4.0"
+          "odataVersion": "2.0",
+          "localUri": "localService/metadata.xml"
         }
       }
     },
@@ -42,11 +40,13 @@
   "sap.ui5": {
     "flexEnabled": false,
     "dependencies": {
-      "minUI5Version": "1.140.0",
+      "minUI5Version": "1.120.0",
       "libs": {
         "sap.m": {},
+        "sap.ushell": {},
         "sap.ui.core": {},
-        "sap.fe.templates": {}
+        "sap.ui.generic.app": {},
+        "sap.suite.ui.generic.template": {}
       }
     },
     "contentDensities": { "compact": true, "cozy": true },
@@ -59,57 +59,41 @@
         "dataSource": "mainService",
         "preload": true,
         "settings": {
-          "synchronizationMode": "None",
-          "operationMode": "Server",
-          "autoExpandSelect": true,
-          "earlyRequests": true
+          "metadataUrlParams": { "sap-value-list": "none" },
+          "defaultBindingMode": "TwoWay",
+          "defaultCountMode": "Inline"
         }
-      },
-      "@i18n": {
-        "type": "sap.ui.model.resource.ResourceModel",
-        "uri": "i18n/i18n.properties"
       }
     },
-    "resources": { "css": [] },
-    "routing": {
-      "config": {},
-      "routes": [
-        {
-          "pattern": ":?query:",
-          "name": "BusinessPartnerSalesOrdersList",
-          "target": "BusinessPartnerSalesOrdersList"
-        }
-      ],
-      "targets": {
-        "BusinessPartnerSalesOrdersList": {
-          "type": "Component",
-          "id": "BusinessPartnerSalesOrdersList",
-          "name": "sap.fe.templates.ListReport",
-          "options": {
-            "settings": {
-              "contextPath": "/BusinessPartnerSalesOrders",
-              "variantManagement": "None",
-              "initialLoad": "Enabled",
-              "controlConfiguration": {
-                "@com.sap.vocabularies.UI.v1.LineItem": {
-                  "tableSettings": {
-                    "type": "ResponsiveTable",
-                    "personalization": {
-                      "sort": true,
-                      "column": true,
-                      "filter": true,
-                      "group": true
-                    },
-                    "selectAll": true,
-                    "selectionMode": "Multi"
-                  }
-                }
-              }
+    "resources": { "css": [] }
+  },
+  "sap.ui.generic.app": {
+    "_version": "1.3.0",
+    "settings": {
+      "forceGlobalRefresh": false,
+      "objectPageHeaderType": "Dynamic",
+      "considerAnalyticalParameters": true
+    },
+    "pages": [
+      {
+        "entitySet": "BusinessPartnerSalesOrders",
+        "component": {
+          "name": "sap.suite.ui.generic.template.ListReport",
+          "list": true,
+          "settings": {
+            "tableType": "GridTable",
+            "multiSelect": true,
+            "condensedTableLayout": true,
+            "smartVariantManagement": false,
+            "gridTable": {
+              "selectionMode": "MultiToggle",
+              "enableColumnReordering": true,
+              "enableSelectAll": true
             }
           }
         }
       }
-    }
+    ]
   },
   "sap.fiori": {
     "registrationIds": [],

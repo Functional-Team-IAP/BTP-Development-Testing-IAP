@@ -28,18 +28,18 @@ annotate SalesService.BusinessPartnerSalesOrders with @(
     { $Type : 'UI.DataField', Value : salesOrderCount, Label : 'Sales Order Count' }
   ],
 
-  // Flat table sorted by Company / Sales Order / Item Position.
-  // Grouping is intentionally NOT defaulted here - declaring GroupBy on
-  // a Responsive Table suppresses the selection column (no checkboxes)
-  // and the runtime expand / collapse behaviour. Users apply grouping
-  // and totals interactively via the column-header menu, which then
-  // shows the full tree, the subtotals, and keeps selection working.
+  // Default two-level grouping for the Fiori Elements V2 List Report.
+  // With tableType "GridTable" in the manifest, FE V2 auto-promotes to
+  // a Tree Table when GroupBy is present, and Total is honoured as
+  // running subtotals at every group level + a grand total.
   UI.PresentationVariant : {
     SortOrder : [
       { Property : companyName,  Descending : false },
       { Property : salesOrderID, Descending : false },
       { Property : itemPosition, Descending : false }
     ],
+    GroupBy : [ companyName, salesOrderID ],
+    Total   : [ convertedAmount ],
     Visualizations : [ '@UI.LineItem' ]
   }
 );

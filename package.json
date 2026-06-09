@@ -11,6 +11,7 @@
   "dependencies": {
     "@cap-js/hana": "^1",
     "@sap/cds": "^8",
+    "@sap/cds-odata-v2-adapter-proxy": "^1",
     "@sap/xssec": "^4",
     "express": "^4",
     "passport": "^0.7"
@@ -21,7 +22,7 @@
     "rimraf": "^5"
   },
   "scripts": {
-    "start": "cds-serve",
+    "start": "cds run",
     "watch-businesspartnersalesorders": "cds watch --open businesspartnersalesorders/webapp/index.html?sap-ui-xx-viewCache=false",
     "build": "rimraf resources mta_archives && mbt build --mtar archive"
   },
