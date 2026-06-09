@@ -6,7 +6,7 @@
   "license": "UNLICENSED",
   "private": true,
   "engines": {
-    "node": ">=20 <24"
+    "node": "22.x"
   },
   "dependencies": {
     "@cap-js/sqlite": "^1",
