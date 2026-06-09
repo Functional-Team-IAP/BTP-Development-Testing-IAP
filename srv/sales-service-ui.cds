@@ -28,16 +28,18 @@ annotate SalesService.BusinessPartnerSalesOrders with @(
     { $Type : 'UI.DataField', Value : salesOrderCount, Label : 'Sales Order Count' }
   ],
 
-  // Default 2-level grouping (Company Name -> Sales Order ID), with a
-  // sort key per group so line items appear in their natural order.
+  // Flat table sorted by Company / Sales Order / Item Position.
+  // Grouping is intentionally NOT defaulted here - declaring GroupBy on
+  // a Responsive Table suppresses the selection column (no checkboxes)
+  // and the runtime expand / collapse behaviour. Users apply grouping
+  // and totals interactively via the column-header menu, which then
+  // shows the full tree, the subtotals, and keeps selection working.
   UI.PresentationVariant : {
     SortOrder : [
       { Property : companyName,  Descending : false },
       { Property : salesOrderID, Descending : false },
       { Property : itemPosition, Descending : false }
     ],
-    GroupBy : [ companyName, salesOrderID ],
-    Total   : [ convertedAmount ],
     Visualizations : [ '@UI.LineItem' ]
   }
 );
